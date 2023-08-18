@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { InitialSpeakersDataContext } from '../src/Contexts/InitialSpeakersDataContext';
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const readFile = fs.readFile;
   let initialSpeakersData;
   try {
@@ -14,7 +14,7 @@ export async function getServerSideProps() {
   } catch (error) {
     console.log('/api/speakers ', error);
   }
- return { props: { initialSpeakersData }};
+ return { revalidate: 1, props: { initialSpeakersData }};
 }
 
 const Speakers = ({ initialSpeakersData }) => {
