@@ -1,30 +1,34 @@
-import { useEffect, useReducer } from 'react';
+import axios from 'axios';
+import { useEffect, useReducer, useContext } from 'react';
 import { setSpeakerReducer } from '../Reducers/speakerReducer';
-import SpeakerData from '../Components/Speakers/SpeakerData';
+import { InitialSpeakersDataContext } from '../Contexts/InitialSpeakersDataContext';
 
 const useSpeakerDataManager = () => {
+  const context = useContext(InitialSpeakersDataContext);
   const [{ isLoading, speakerList }, dispatch] = useReducer(setSpeakerReducer, {
-    isLoading: true,
-    speakerList: [],
+    isLoading: false,
+    speakerList: context.initialSpeakersData,
   });
 
   function toggleSpeakerFavorite(speakerRec) {
-    speakerRec.favorite === true
-      ? dispatch({ type: 'unfavorite', id: speakerRec.id })
-      : dispatch({ type: 'favorite', id: speakerRec.id });
+    const updateData = async () => {
+      await axios.put(`/api/speakers/${speakerRec.id}`, {...speakerRec, favorite: !speakerRec.favorite });
+      speakerRec.favorite === true
+        ? dispatch({ type: 'unfavorite', id: speakerRec.id })
+        : dispatch({ type: 'favorite', id: speakerRec.id });
+    };
+    updateData();
   }
   useEffect(() => {
-    new Promise(function (resolve) {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    }).then(() => {
+    const fetchData = async () => {
+      const result = await axios.get('/api/speakers');
       dispatch({
-        type: 'setSpeakerList',
-        data: SpeakerData,
-      });
-    });
-
+        type:'setSpeakerList',
+        data: result.data
+      })
+    };
+    fetchData();
+    
     return () => {
       console.log('cleanup');
     };
