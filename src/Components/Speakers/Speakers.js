@@ -4,13 +4,13 @@ import { Menu } from '../Utils/Menu';
 import SpeakerDetail from './SpeakerDetail';
 import { useSpeakersFilter } from '../../Hooks/useSpeakerFilterHook';
 import { ConfigContext } from '../../Contexts/ConfigContext';
-import useSpeakerDataManager from '../../Hooks/useSpeakerDataManager';
+import { GlobalContext } from '../../Contexts/GlobalState';
 
 const Speakers = ({}) => {
   const [speakingSaturday, setSpeakingSaturday] = useState(true);
   const [speakingSunday, setSpeakingSunday] = useState(true);
   const context = useContext(ConfigContext);
-  const { isLoading, speakerList, toggleSpeakerFavorite } = useSpeakerDataManager();
+  const { isLoading, speakerList, toggleSpeakerFavorite } = useContext(GlobalContext);
   const speakerFilteredList = useSpeakersFilter(speakerList, speakingSaturday, speakingSunday);
 
   const handleChangeSaturday = () => {

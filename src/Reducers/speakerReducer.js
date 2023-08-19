@@ -14,6 +14,8 @@ export const setSpeakerReducer = (state, action) => {
       return { ...state, speakerList: updateFavorite(true) };
     case 'unfavorite':
       return { ...state, speakerList: updateFavorite(false) };
+    case 'incrementFavoriteClickCount':
+      return { ...state, favoriteClickCount: state.favoriteClickCount + 1 };
     default:
       return state;
   }

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ImageToggleOnScroll from '../../Hooks/ImageToggleOnScrollHook';
+import { FavoriteClickCountContext } from '../../Contexts/FavoriteClickCountContext';
 
 const SpeakerDetail = React.memo(({ speakerRec, onHeartFavoriteHandler }) => {
   const { id, firstName, lastName, bio, favorite } = speakerRec;
+  const { incrementFavoriteClickCount } = useContext(FavoriteClickCountContext);
   return (
     <div className='card col-4 cardmin'>
       <ImageToggleOnScroll
@@ -17,6 +19,7 @@ const SpeakerDetail = React.memo(({ speakerRec, onHeartFavoriteHandler }) => {
             className={favorite ? 'heartredbutton' : 'heartdarkbutton'}
             onClick={(e) => {
               onHeartFavoriteHandler(e, speakerRec);
+              incrementFavoriteClickCount();
             }}
           />
           <span>
