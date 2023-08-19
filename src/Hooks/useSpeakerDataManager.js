@@ -3,10 +3,12 @@ import { useEffect, useReducer } from 'react';
 import { setSpeakerReducer } from '../Reducers/speakerReducer';
 
 const useSpeakerDataManager = () => {
-  const [{ isLoading, speakerList, favoriteClickCount }, dispatch] = useReducer(setSpeakerReducer, {
+  const [{ isLoading, speakerList, favoriteClickCount, hasError, error }, dispatch] = useReducer(setSpeakerReducer, {
     isLoading: true,
     speakerList: [],
     favoriteClickCount: 0,
+    hasError: false,
+    error: null
   });
 
   function toggleSpeakerFavorite(speakerRec) {
@@ -24,11 +26,15 @@ const useSpeakerDataManager = () => {
   }
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('/api/speakers');
-      dispatch({
-        type: 'setSpeakerList',
-        data: result.data,
-      });
+      try {
+        const result = await axios.get('/api/speakers');
+        dispatch({
+          type: 'setSpeakerList',
+          data: result.data,
+        });
+      } catch (error) {
+        dispatch({type: 'errored', error })
+      }
     };
     fetchData();
 
@@ -37,7 +43,7 @@ const useSpeakerDataManager = () => {
     };
   }, []);
 
-  return { isLoading, speakerList, favoriteClickCount, incrementFavoriteClickCount, toggleSpeakerFavorite };
+  return { isLoading, speakerList, favoriteClickCount, incrementFavoriteClickCount, toggleSpeakerFavorite, hasError, error };
 };
 
 export default useSpeakerDataManager;
