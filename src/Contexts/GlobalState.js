@@ -12,6 +12,8 @@ export const GlobalProvider = ({ children }) => {
     toggleSpeakerFavorite,
     hasError,
     error,
+    imageIdentifier,
+    forceImageRerender
   } = useSpeakerDataManager();
   const provider = {
     isLoading,
@@ -21,6 +23,8 @@ export const GlobalProvider = ({ children }) => {
     toggleSpeakerFavorite,
     hasError,
     error,
+    imageIdentifier,
+    forceImageRerender
   };
   return <GlobalContext.Provider value={provider}>{children}</GlobalContext.Provider>;
 };
