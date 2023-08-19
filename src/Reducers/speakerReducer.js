@@ -18,6 +18,8 @@ export const setSpeakerReducer = (state, action) => {
       return { ...state, favoriteClickCount: state.favoriteClickCount + 1 };
     case 'errored':
       return { ...state, isLoading: false, hasError: true, error: action.error };
+    case 'rerender_image':
+      return { ...state, imageIdentifier: new Date().getTime() };
     default:
       return state;
   }

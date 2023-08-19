@@ -10,14 +10,16 @@ const Speakers = ({}) => {
   const [speakingSaturday, setSpeakingSaturday] = useState(true);
   const [speakingSunday, setSpeakingSunday] = useState(true);
   const context = useContext(ConfigContext);
-  const { isLoading, speakerList, toggleSpeakerFavorite, hasError, error } = useContext(GlobalContext);
+  const { isLoading, speakerList, toggleSpeakerFavorite, hasError, error, forceImageRerender } = useContext(GlobalContext);
   const speakerFilteredList = useSpeakersFilter(speakerList, speakingSaturday, speakingSunday);
 
   const handleChangeSaturday = () => {
     setSpeakingSaturday(!speakingSaturday);
+    forceImageRerender()
   };
   const handleChangeSunday = () => {
     setSpeakingSunday(!speakingSunday);
+    forceImageRerender()
   };
   const heartFavoriteHandler = useCallback((e, speakerRec) => {
     e.preventDefault();
